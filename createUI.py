@@ -12,9 +12,12 @@ class UI (QWidget):
 
     def draw_preUI(self):
         self.setGeometry(500, 400, 300, 200)
-        self.setWindowTitle("선형대수")
+        self.setWindowTitle("Linear Algebra")
         hbox1, vbox2, self.hbox3, self.vbox4, self.hbox5, self.vbox = QHBoxLayout(), QVBoxLayout(), QHBoxLayout(), QVBoxLayout(), QHBoxLayout(), QVBoxLayout()
-        titleText1 = QLabel("프로그램 이름")
+        titleText1 = QLabel("넘기면서 봐요, 선형대수")
+        font = titleText1.font()
+        font.setPointSize(font.pointSize() + 4)
+        titleText1.setFont(font)
         titleText1.setAlignment(Qt.AlignCenter)
         explainText1 = QLabel("가우스 소거법의 forward elimination 단계,\n행렬의 곱셈, 역행렬 계산의 과정을 단계별로\n확인하며 원리를 공부할 수 있는 프로그램입니다.")
         explainText1.setAlignment(Qt.AlignCenter)
@@ -58,7 +61,7 @@ class UI (QWidget):
 
     def draw_mainUI(self):
         self.setGeometry(500, 400, 460, 550)
-        self.setWindowTitle("선형대수 풀이")
+        self.setWindowTitle("Linear Algebra")
         expText, self.inputText, inputButton = QTextEdit(), QLineEdit(), QPushButton("입력")
         inputButton.clicked.connect(self.inputClicked)
         self.inputText.setFixedWidth(self.inputText.width() - 500)
