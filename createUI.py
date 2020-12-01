@@ -6,8 +6,9 @@ from PyQt5.QtWidgets import (QWidget, QPushButton,
 
 class UI (QWidget):
     def __init__(self):
+        self.matA = []
+        self.matB = []
         super().__init__()
-        self.draw_preUI()
 
     def draw_preUI(self):
         self.setGeometry(500, 400, 300, 200)
@@ -29,7 +30,7 @@ class UI (QWidget):
         self.whichMethod.addItem("3 행렬의 곱셈")
         self.hbox3.addWidget(self.whichMethod)
         startButton = QPushButton("시작!")
-        startButton.clicked.connect(self.buttonClicked)
+        startButton.clicked.connect(self.startClicked)
         hbox1.addStretch(1)
         hbox1.addWidget(startButton)
         self.hbox5.addLayout(vbox2)
@@ -41,24 +42,46 @@ class UI (QWidget):
         self.setLayout(self.vbox)
         self.show()
 
-    def buttonClicked(self):
+    def startClicked(self):
         # if self.whichMethod.currentText().startswith("1") :
+        self.draw_mainUI()
+        print(self.whichMethod.currentText()[0])
         return self.whichMethod.currentText()[0]
 
+    def inputClicked(self):
+        self.matA.append(list(self.inputText.text()))
+        for arr in self.matA :
+            text = ""
+            for i in range(len(arr)) :
+                text += str(arr[i])
+        self.display1.append(text)
+
     def draw_mainUI(self):
-        self.setGeometry(500, 400, 850, 680)
+        self.setGeometry(500, 400, 460, 550)
         self.setWindowTitle("선형대수 풀이")
-        expText, inputText = QTextEdit(), QLineEdit()
-        display1, display2 = QTextEdit(), QTextEdit()
+        expText, self.inputText, inputButton = QTextEdit(), QLineEdit(), QPushButton("입력")
+        inputButton.clicked.connect(self.inputClicked)
+        self.inputText.setFixedWidth(self.inputText.width() - 500)
+        self.display1, self.display2 = QTextEdit(), QTextEdit()
+        font = self.display1.font()
+        font.setPointSize(font.pointSize() + 7)
+        self.display1.setFont(font)
+        self.display1.setAlignment(Qt.AlignCenter)
+        self.display1.setReadOnly(True)
+        font2 = self.display2.font()
+        font2.setPointSize(font2.pointSize() + 7)
+        self.display2.setFont(font2)
+        self.display2.setAlignment(Qt.AlignCenter)
+        self.display2.setReadOnly(True)
         nextButton, backButton = QPushButton("▶"), QPushButton("◀")
         display_box, text_box, button_box, box = QHBoxLayout(), QHBoxLayout(), QHBoxLayout(), QVBoxLayout()
         text_box.addStretch(1)
         text_box.addWidget(expText)
-        text_box.addStretch(2)
-        text_box.addWidget(inputText)
+        text_box.addWidget(self.inputText)
         text_box.addStretch(1)
-        display_box.addWidget(display1)
-        display_box.addWidget(display2)
+        text_box.addWidget(inputButton)
+        display_box.addWidget(self.display1)
+        display_box.addWidget(self.display2)
         button_box.addStretch(3)
         button_box.addWidget(backButton)
         button_box.addStretch(1)
@@ -74,4 +97,10 @@ class UI (QWidget):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ui = UI()
+    ui.draw_mainUI()
     sys.exit(app.exec_())
+    if ui.buttonClicked() in ["1", "2", "3", 1, 2, 3] :
+        ui.hide()
+        del ui
+        x = UI()
+        x.draw_mainUI()
